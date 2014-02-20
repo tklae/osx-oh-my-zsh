@@ -18,7 +18,8 @@ template "#{node.sprout.home}/.zshrc" do
   variables({
     theme: node.oh_my_zsh.theme,
     case_sensitive: node.oh_my_zsh.case_sensitive,
-    plugins: node.oh_my_zsh.plugins
+    plugins: node.oh_my_zsh.plugins,
+    enable_rbenv: node.oh_my_zsh.enable_rbenv
   })
 end
 
