@@ -3,43 +3,31 @@
 # Recipe:: default
 #
 
-if node['oh_my_zsh']['users'].any?
-  package "zsh"
-  include_recipe "git"
+git "#{node.sprout.home}/.oh-my-zsh" do
+  repository 'git://github.com/robbyrussell/oh-my-zsh.git'
+  user node.current_user
+  reference "master"
+  action :sync
 end
 
-# for each listed user
-node['oh_my_zsh']['users'].each do |user_hash|
-  home_directory = `cat /etc/passwd | grep "#{user_hash[:login]}" | cut -d ":" -f6`.chop
+template "#{node.sprout.home}/.zshrc" do
+  source "zshrc.erb"
+  owner node.current_user
+  mode "644"
+  action :create_if_missing
+  variables({
+    theme: node.oh_my_zsh.theme,
+    case_sensitive: node.oh_my_zsh.case_sensitive,
+    plugins: node.oh_my_zsh.plugins
+  })
+end
 
-  git "#{home_directory}/.oh-my-zsh" do
-    repository 'git://github.com/robbyrussell/oh-my-zsh.git'
-    user user_hash[:login]
-    reference "master"
-    action :sync
-  end
+user node['current_user'] do
+  action :modify
+  shell '/bin/zsh'
+end
 
-  template "#{home_directory}/.zshrc" do
-    source "zshrc.erb"
-    owner user_hash[:login]
-    mode "644"
-    action :create_if_missing
-    variables({
-      :user => user_hash[:login],
-      :theme => user_hash[:theme] || 'robbyrussell',
-      :case_sensitive => user_hash[:case_sensitive] || false,
-      :plugins => user_hash[:plugins] || %w(git)
-    })
-  end
-
-  user user_hash[:login] do
-    action :modify
-    shell '/bin/zsh'
-  end
-
-  execute "fixing osx zsh environment bug" do
-    command "mv /etc/{zshenv,zprofile}"
-    only_if { File.exists?("/etc/zshenv") }
-  end
-
+execute "fixing osx zsh environment bug" do
+  command "mv /etc/{zshenv,zprofile}"
+  only_if { File.exists?("/etc/zshenv") }
 end
