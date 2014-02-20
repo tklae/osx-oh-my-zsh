@@ -37,10 +37,9 @@ node['oh_my_zsh']['users'].each do |user_hash|
     shell '/bin/zsh'
   end
 
-
-  execute "source /etc/profile to all zshrc" do
-    command "echo 'source /etc/profile' >> /etc/zsh/zprofile"
-    not_if "grep 'source /etc/profile' /etc/zsh/zprofile"
+  execute "fixing osx zsh environment bug" do
+    command "mv /etc/{zshenv,zprofile}"
+    only_if { File.exists?("/etc/zshenv") }
   end
 
 end
