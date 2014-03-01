@@ -49,6 +49,12 @@ plugins=(<%= @plugins.join(' ') %>)
 
 source $ZSH/oh-my-zsh.sh
 
+# Additional sources
+
+<% @sources.each do |source| -%>
+source <%= source %>
+<% end -%>
+
 # User configuration
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -66,7 +72,3 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
-<% if @enable_rbenv %>
-
-eval "$(rbenv init -)"
-<% end %>
