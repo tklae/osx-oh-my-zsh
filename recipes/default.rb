@@ -19,7 +19,7 @@ template "#{node['etc']['passwd'][node['current_user']]['dir']}/.zshrc" do
     theme: node.oh_my_zsh.theme,
     case_sensitive: node.oh_my_zsh.case_sensitive,
     plugins: node.oh_my_zsh.plugins,
-    enable_rbenv: node.oh_my_zsh.enable_rbenv
+    sources: node.oh_my_zsh.sources
   })
 end
 
