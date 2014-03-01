@@ -3,14 +3,14 @@
 # Recipe:: default
 #
 
-git "#{node['current_user']['dir']}/.oh-my-zsh" do
+git "#{node['etc']['passwd'][node['current_user']]['dir']}/.oh-my-zsh" do
   repository 'git://github.com/robbyrussell/oh-my-zsh.git'
   user node.current_user
   reference "master"
   action :sync
 end
 
-template "#{node['current_user']['dir']}/.zshrc" do
+template "#{node['etc']['passwd'][node['current_user']]['dir']}/.zshrc" do
   source "zshrc.erb"
   owner node.current_user
   mode "644"
