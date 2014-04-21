@@ -1,0 +1,29 @@
+lt() { ls -ltrsa "$@" | tail; }
+psgrep() { ps aux | grep -v grep | grep "$@" -i --color=auto; }
+fname() { find . -iname "*$@*"; }
+#Git colors
+git config --global color.ui true
+#Global aliases
+alias aliases='less ~/.aliases'
+alias dir='ls -l'
+alias ll='ls -l'
+alias myps='ps -w -u $USER'
+alias gs='git status'
+alias gpr='git pull --rebase'
+alias grd='git rm $(git ls-files --deleted)'
+alias flushdns='sudo dscacheutil -flushcache'
+alias findfile='sudo find / -name'
+alias symlinkfromto='ln -s'
+alias webserver='while true; do { echo -e "HTTP/1.1 200 OK\r\n"; cat index.html; } | nc -l 8080; done'
+alias webserverpython='python -m SimpleHTTPServer 8080'
+alias homebrewupdateall='brew update && brew upgrade `brew outdated`'
+alias restartCamera='sudo killall VDCAssistant'
+alias gcommit='git pull --rebase && gradle build && git push'
+alias gradle='gradle --daemon'
+alias convertHalfSize='for i in $( ls *.jpg); do convert -resize 50% $i re_$i; done'
+alias resize30='mkdir resized && for i in $( ls *.jpg); do convert -resize 30% $i ./resized/$i; done'
+gblame()
+{
+  git show $(git blame $1 -L $2 | awk '{print $1}') #Usage: gblame [filename] [line numbers from  m to n as m,n]. Example: gblame settings.gradle 1,1
+}
+alias secretGist='gist -p '#Filename
