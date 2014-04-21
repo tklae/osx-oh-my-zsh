@@ -23,6 +23,13 @@ template "#{node['etc']['passwd'][node['current_user']]['dir']}/.zshrc" do
   })
 end
 
+template "#{node['etc']['passwd'][node['current_user']]['dir']}/.aliases" do
+  source "aliases.erb"
+  owner node.current_user
+  mode "644"
+  action :create_if_missing
+end
+
 user node['current_user'] do
   action :modify
   shell '/bin/zsh'
